@@ -1,6 +1,25 @@
-from numpy.distutils.misc_util import Configuration
-from numpy.distutils.core import setup as setup
-from numpy.distutils.core import Extension
+try:
+    from numpy.distutils.core import Extension
+    from numpy.distutils.core import setup as setup
+    from numpy.distutils.misc_util import Configuration
+    import scipy
+    import pandas
+    import pyhank
+
+except:
+    import pip
+    pip.main(["install", "numpy"])
+    pip.main(["install", "scipy"])
+    pip.main(["install", "pandas"])
+    pip.main(["install", "pyhank"])
+
+    from numpy.distutils.core import Extension
+    from numpy.distutils.core import setup as setup
+    from numpy.distutils.misc_util import Configuration
+    import scipy
+    import pandas
+    import pyhank
+
 
 ext_modules = [
     Extension("induction_log_tools.fortran_bins.petroleum_probability",
@@ -16,6 +35,7 @@ ext_modules = [
 
 def configuration(parent_package='', top_path=None):
     config = Configuration('induction_log_tools')
+    config.add_include_dirs(["/usr/include/fgsl/"])
     return config
 
 
@@ -25,8 +45,9 @@ setup(
     author='MRLimcon',
     scripts=[
         'data_feeder.py',
-        'dataframe_utils.py',
-        'pde_solver.py'
+        'data_analysis.py',
+        'transformation_hankel.py',
+        'transformation_voltage_to_conductivity.py'
     ],
     url='https://github.com/MRLimcon/numerical_module',
     license='LICENSE',
@@ -37,6 +58,7 @@ setup(
     install_requires=[
        "numpy",
        "scipy",
-       "pandas"
+       "pandas",
+       "pyhank"
     ]
 )
